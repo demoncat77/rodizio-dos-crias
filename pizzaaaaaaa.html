@@ -5,13 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RANGO DE PICAS 🍆😏🐱🍕</title>
   <style>
+    /* Fundo temático pizza em CSS */
     body {
       font-family: 'Comic Sans MS', cursive, sans-serif;
       margin: 0;
       padding: 0;
-      background: url('https://media.giphy.com/media/QvBoMEcQ7DQXK/giphy.gif') repeat center center fixed;
-      background-size: cover;
-      backdrop-filter: blur(2px);
+      background-color: #fff0d6;
+      background-image:
+        /* fatias amarelas */
+        radial-gradient(circle at 50% 50%, #ffcc66 20%, transparent 21%),
+        repeating-conic-gradient(
+          #ff9966 0deg 18deg,
+          #ffcc66 18deg 36deg
+        );
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      backdrop-filter: blur(1.5px);
     }
 
     header {
@@ -34,11 +43,16 @@
       text-align: center;
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
       backdrop-filter: blur(3px);
+      margin-top: 8px;
+      border-radius: 8px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .container {
       max-width: 480px;
-      margin: 20px auto;
+      margin: 20px auto 40px auto;
       padding: 15px;
       background-color: rgba(255, 255, 255, 0.9);
       border-radius: 10px;
@@ -129,30 +143,7 @@
   <div class="container" id="ranking"></div>
   <div class="hidden-data" id="dataHoje"></div>
 
-  <!-- Sons safadinhos -->
-  <audio id="som1" src="https://actions.google.com/sounds/v1/food/pizza_slice_bite.ogg" preload="auto"></audio>
-  <audio id="som2" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" preload="auto"></audio>
-  <audio id="som3" src="https://actions.google.com/sounds/v1/human_voices/laugh_female.ogg" preload="auto"></audio>
-  <audio id="som4" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
-  <audio id="som5" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg" preload="auto"></audio>
-  <audio id="som6" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
-
   <script>
-    const sons = [
-      document.getElementById("som1"),
-      document.getElementById("som2"),
-      document.getElementById("som3"),
-      document.getElementById("som4"),
-      document.getElementById("som5"),
-      document.getElementById("som6")
-    ];
-
-    function tocarSomAleatorio() {
-      const som = sons[Math.floor(Math.random() * sons.length)];
-      som.currentTime = 0;
-      som.play();
-    }
-
     const nomesPadrao = [
       "Yago", "Aleandro", "Orlean", "Joao", "Matheus",
       "Davi", "Kelton", "Gabriela", "Luiz", "Alessandro"
@@ -206,7 +197,6 @@
     function alterar(i, tipo, v) {
       const p = pessoas[i];
       p[tipo] = Math.max(0, p[tipo] + v);
-      tocarSomAleatorio();
       salvarDados();
       render();
     }
