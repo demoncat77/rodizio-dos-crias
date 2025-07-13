@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RANGO DE PICAS 🍆😏🐱🍕</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('https://media.giphy.com/media/GCvktC0KFy9l6/giphy.gif') repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: blur(2px);
+    }
+
+    header {
+      text-align: center;
+      padding: 25px 10px 15px;
+      background-color: rgba(255, 105, 180, 0.9);
+      color: white;
+      font-size: 2em;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      backdrop-filter: blur(3px);
+    }
+
+    .ranking {
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #c71585;
+      padding: 10px;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+      backdrop-filter: blur(3px);
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 20px auto;
+      padding: 15px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      backdrop-filter: blur(3px);
+    }
+
+    .pessoa {
+      background: rgba(255, 255, 255, 0.85);
+      margin-bottom: 14px;
+      padding: 14px;
+      border-radius: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-left: 6px solid #ff69b4;
+      backdrop-filter: blur(2px);
+    }
+
+    .pessoa-info h2 {
+      font-size: 1.2em;
+      margin: 0 0 5px;
+      color: #ff1493;
+    }
+
+    .pontos {
+      font-size: 0.95em;
+      color: #555;
+    }
+
+    .botoes {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    button {
+      padding: 7px 12px;
+      background-color: #ff69b4;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      font-size: 0.9em;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff1493;
+    }
+
+    button:active {
+      background-color: #d4146f;
+    }
+
+    @media (max-width: 500px) {
+      .pessoa {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .botoes {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 10px;
+      }
+
+      button {
+        flex: 1;
+      }
+    }
+
+    .hidden-data {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    RANGO DE PICAS 🍆😏🐱🍕
+    <div id="top3" class="ranking"></div>
+  </header>
+
+  <div class="container" id="ranking"></div>
+  <div class="hidden-data" id="dataHoje"></div>
+
+  <!-- Sons safadinhos -->
+  <audio id="som1" src="https://actions.google.com/sounds/v1/food/pizza_slice_bite.ogg" preload="auto"></audio>
+  <audio id="som2" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" preload="auto"></audio>
+  <audio id="som3" src="https://actions.google.com/sounds/v1/human_voices/laugh_female.ogg" preload="auto"></audio>
+  <audio id="som4" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+  <audio id="som5" src="https://actions.google.com/sounds/v1/cartoon/pop.ogg" preload="auto"></audio>
+  <audio id="som6" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
+
+  <script>
+    const sons = [
+      document.getElementById("som1"),
+      document.getElementById("som2"),
+      document.getElementById("som3"),
+      document.getElementById("som4"),
+      document.getElementById("som5"),
+      document.getElementById("som6")
+    ];
+
+    function tocarSomAleatorio() {
+      const som = sons[Math.floor(Math.random() * sons.length)];
+      som.currentTime = 0;
+      som.play();
+    }
+
+    const nomesPadrao = [
+      "Yago", "Aleandro", "Orlean", "Joao", "Matheus",
+      "Davi", "Kelton", "Gabriela", "Luiz", "Alessandro"
+    ];
+
+    let pessoas = [];
+    try {
+      const salvo = JSON.parse(localStorage.getItem('pessoasPizza'));
+      if (Array.isArray(salvo)) {
+        pessoas = salvo;
+      } else {
+        throw new Error("Dados inválidos");
+      }
+    } catch (e) {
+      pessoas = nomesPadrao.map(nome => ({ nome, doce: 0, salgado: 0 }));
+      localStorage.setItem('pessoasPizza', JSON.stringify(pessoas));
+    }
+
+    function salvarDados() {
+      localStorage.setItem('pessoasPizza', JSON.stringify(pessoas));
+    }
+
+    function render() {
+      const cont = document.getElementById("ranking");
+      cont.innerHTML = "";
+
+      pessoas.sort((a, b) => a.nome.localeCompare(b.nome));
+
+      pessoas.forEach((p, i) => {
+        const total = p.doce + p.salgado;
+        const div = document.createElement("div");
+        div.className = "pessoa";
+        div.innerHTML = `
+          <div class="pessoa-info">
+            <h2>🍕 ${p.nome}</h2>
+            <div class="pontos">🍭 Doce: ${p.doce} | 🧀 Salgado: ${p.salgado} | Total: ${total}</div>
+          </div>
+          <div class="botoes">
+            <button onclick="alterar(${i}, 'doce', 1)">+ Pizza Doce 😋</button>
+            <button onclick="alterar(${i}, 'doce', -1)">- Pizza Doce 😢</button>
+            <button onclick="alterar(${i}, 'salgado', 1)">+ Pizza Salgada 😍</button>
+            <button onclick="alterar(${i}, 'salgado', -1)">- Pizza Salgada 😭</button>
+          </div>`;
+        cont.appendChild(div);
+      });
+
+      ordenarRanking();
+      mostrarData();
+    }
+
+    function alterar(i, tipo, v) {
+      const p = pessoas[i];
+      p[tipo] = Math.max(0, p[tipo] + v);
+      tocarSomAleatorio();
+      salvarDados();
+      render();
+    }
+
+    function ordenarRanking() {
+      const top = [...pessoas].sort((a,b) => (b.doce + b.salgado) - (a.doce + a.salgado)).slice(0,3);
+      const medalhas = ["🥇", "🥈", "🥉"];
+      const el = document.getElementById("top3");
+      el.innerHTML = top.map((p, i) => `${medalhas[i]} ${p.nome} (${p.doce + p.salgado} fatias 🍕)`).join("<br>");
+    }
+
+    function mostrarData() {
+      const hoje = new Date();
+      const dataFormatada = hoje.toLocaleDateString('pt-BR', {
+        day: '2-digit', month: 'long', year: 'numeric'
+      });
+      document.getElementById("dataHoje").innerText = `Data: ${dataFormatada}`;
+    }
+
+    render();
+  </script>
+</body>
+</html>
